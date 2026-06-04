@@ -7,9 +7,9 @@ U = 0
 
 # La boucle commence à 1 car on ne peut pas diviser par i=0
 for i in range(1, n + 1):
-    S = S + 1 / i          # 1 + 1/2 + 1/3 + ...
-    T = T + 1 / (i ** 2)   # 1 + 1/2² + 1/3² + ...
-    U = U + 1 / (2 ** i)   # 1/2¹ + 1/2² + 1/2³ + ...
+    S = S + 1 / i          # 1 + 1/2 + 1/3 + ... + 1/n
+    T = T + 1 / (i ** 2)   # 1 + 1/2² + 1/3² + ...+ 1/n²
+    U = U + 1 / (2 ** i)   # 1/2¹ + 1/2² + 1/2³ + ...+ 1/2^n
 
 # Attention : pour la suite U, l'énoncé commence à 1 (qui correspond à 1/(2^0)).
 # Comme notre boucle a démarré à i=1, on rajoute manuellement le "1" initial à la fin.
