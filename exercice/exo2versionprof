@@ -1,0 +1,80 @@
+# ==============================================================================
+# Exercice 2 : Version Récursive (Méthode avec fonctions c(n))
+# ==============================================================================
+
+print("Calcul du capital acquis et de ses intérêts versés...")
+
+# ------------------------------------------------------------------------------
+# 1. SAISIE DES DONNÉES UTILISATEUR
+# ------------------------------------------------------------------------------
+# c0 : Le capital initial mis au départ (ex: 300)
+c0 = float(input("Entrer le placement de départ: "))
+
+# m : Le montant du versement mensuel (ex: 45)
+m = float(input("Entrer le montant du versement mensuel: "))
+
+# t : Le taux annuel en pourcentage (ex: 2.3)
+t = float(input("Entrer le taux annuel en %: "))
+
+# n : Le nombre d'années total du placement (ex: 8)
+n = int(input("Entrer le nombre d'années: "))
+
+# Calcul du capital brut versé de notre poche sans les intérêts pour comparer
+capital_sans_interets = c0 + (m * 12 * n)
+
+
+# ==============================================================================
+# QUESTION 1 : Fonction pour les intérêts calculés UNE FOIS PAR AN
+# ==============================================================================
+# n représente ici le nombre d'ANNÉES
+def c_annuel(n):
+    if n == 0:
+        # Condition d'arrêt : à l'année 0, on a juste notre capital de départ c0
+        return c0
+    else:
+        # Équation récurrente annuelle :
+        # On prend le capital de l'année précédente 'c_annuel(n-1)'
+        # On y ajoute 12 mois de versements '12 * m'
+        # Et on applique le taux annuel d'intérêts '(1 + t/100)' sur le tout
+        return (c_annuel(n-1) + 12 * m) * (1 + t/100)
+
+
+# ==============================================================================
+# QUESTION 2 : Fonction pour les intérêts calculés UNE FOIS PAR MOIS
+# ==============================================================================
+# nb_mois représente ici le nombre total de MOIS
+def c_mensuel(nb_mois):
+    if nb_mois == 0:
+        # Condition d'arrêt : au mois 0, on a notre capital de départ c0
+        return c0
+    else:
+        # Équation récurrente mensuelle :
+        # On prend le capital du mois précédent 'c_mensuel(nb_mois-1)'
+        # On y ajoute le versement de CE mois-ci '+ m'
+        # Et on applique le taux mensuel : 1 + (t / 12 / 100)
+        return (c_mensuel(nb_mois-1) + m) * (1 + (t / 12 / 100))
+
+
+# ==============================================================================
+# 2. APPELS DES FONCTIONS ET AFFICHAGE DES RÉSULTATS
+# ==============================================================================
+
+# --- Affichage Question 1 ---
+# On appelle la fonction avec 'n' années
+capital_final_q1 = c_annuel(n)
+interets_gagnes_q1 = capital_final_q1 - capital_sans_interets
+
+print(f"Le capital acquis avec intérêts est de {round(capital_final_q1, 2)} euros au bout de {n} ans avec des versements mensuels de {round(m)} euros.")
+print(f"Les intérêts gagnés au taux annuel de {t} % sont de {round(interets_gagnes_q1, 2)} euros.")
+print(f"Sans placement avec intérêts le capital acqui serait de {round(capital_sans_interets)} euros.")
+
+
+# --- Affichage Question 2 ---
+# On appelle la fonction avec le nombre total de mois : n * 12
+capital_final_q2 = c_mensuel(n * 12)
+interets_gagnes_q2 = capital_final_q2 - capital_sans_interets
+
+print("\nExemple de résultat attendu à la question 2 :")
+print(f"Le capital acquis avec intérêts est de {round(capital_final_q2, 2)} euros au bout de {n} ans avec des versements mensuels de {round(m)} euros.")
+print(f"Les intérêts gagnés au taux annuel de {t} % sont de {round(interets_gagnes_q2, 2)} euros.")
+print(f"Sans placement avec intérêts le capital acqui serait de {round(capital_sans_interets)} euros.")

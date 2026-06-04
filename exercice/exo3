@@ -1,0 +1,69 @@
+# ==============================================================================
+# Exercice 3 : Calcul du diamètre et de l'enroulement d'un volet roulant
+# ==============================================================================
+
+import math  # On importe le module math pour pouvoir utiliser la valeur précise de Pi (math.pi)
+
+# ------------------------------------------------------------------------------
+# 1. SAISIE DES DONNÉES UTILISATEUR
+# ------------------------------------------------------------------------------
+# d_axe : Diamètre initial de l'axe moteur en mm (ex: 100 dans ta capture d'écran)
+d_axe = float(input("Entrer le diamètre de l'axe en mm: "))
+
+# n : Nombre de tours d'enroulement à simuler (ex: 10)
+n = int(input("Entrer nombre de tours n: "))
+
+print("\nCalcul de la longueur L pour chaque tour:")
+
+# ------------------------------------------------------------------------------
+# 2. INITIALISATION DES VARIABLES
+# ------------------------------------------------------------------------------
+# On commence avec le diamètre initial de l'axe
+diametre_actuel = d_axe
+
+# Compteur pour cumuler la longueur totale de tablier enroulée au fil des tours
+longueur_enroulee_cumulee = 0
+
+# Épaisseur d'une lame enroulée (7.5 mm de base + 1.5 mm de jeu/rigidité = 9.0 mm)
+epaisseur_lame = 7.5 + 1.5
+
+# ------------------------------------------------------------------------------
+# 3. BOUCLE TOUR PAR TOUR (SUITE ARITHMÉTIQUE)
+# ------------------------------------------------------------------------------
+# La boucle va tourner 'n' fois (ex: de j = 0 à j = 9)
+for j in range(n):
+    
+    # Étape A : Le diamètre augmente à cause de l'épaisseur de la lame enroulée.
+    # Au tout premier tour (j = 0), le volet s'enroule sur l'axe directement.
+    # Pour correspondre à l'affichage de ton prof, on applique l'augmentation APRÈS le premier calcul,
+    # ou on calcule le diamètre du tour en cours.
+    if j > 0:
+        # À chaque nouveau tour, le diamètre augmente de 2 fois l'épaisseur de la lame 
+        # (car la lame s'ajoute des deux côtés de l'axe : au-dessus et en-dessous)
+        diametre_actuel = diametre_actuel + (2 * epaisseur_lame)
+        
+    # Étape B : Calcul de la longueur de tablier avalée pendant CE tour précis (Périmètre du cercle)
+    # Formule : Périmètre = Pi * Diamètre
+    longueur_ce_tour = math.pi * diametre_actuel
+    
+    # Étape C : On ajoute la longueur de ce tour au cumul total
+    longueur_enroulee_cumulee = longueur_enroulee_cumulee + longueur_ce_tour
+    
+    # Étape D : Affichage aligné de la ligne du tour en cours
+    # j+1 : Pour afficher Tour 1 au lieu de Tour 0
+    # round(..., 1) ou round(..., 0) pour correspondre exactement aux décimales de ta capture d'écran
+    print(f"Tour: {j+1:<2} - Diamètre [mm]: {round(diametre_actuel, 1):<5} - Longueur enroulée [mm]: {round(longueur_enroulee_cumulee)}")
+
+
+# ------------------------------------------------------------------------------
+# 4. CALCUL GLOBAL DIRECT PAR FORMULE MATHÉMATIQUE
+# ------------------------------------------------------------------------------
+print("\nCalcul de la longueur L par formule:")
+
+# Formule de la somme d'une suite arithmétique pour calculer directement la longueur totale sans boucle.
+# Le diamètre moyen entre le premier et le dernier tour est utilisé pour appliquer la formule globale.
+diametre_final = d_axe + 2 * epaisseur_lame * (n - 1)
+longueur_formule_directe = n * math.pi * (d_axe + diametre_final) / 2
+
+# Affichage de la vérification par formule (avec toutes ses décimales comme sur l'image)
+print(f"Longueur [mm] pour {n} tours: {longueur_formule_directe}")

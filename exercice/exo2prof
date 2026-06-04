@@ -1,0 +1,83 @@
+# ==============================================================================
+# Exercice 2 : Calcul des intérêts sur un placement (Suites récurrentes)
+# ==============================================================================
+
+print("Calcul du capital acquis et de ses intérêts versés...")
+
+# ------------------------------------------------------------------------------
+# 1. SAISIE DES DONNÉES UTILISATEUR
+# ------------------------------------------------------------------------------
+# s : Capital ou placement de départ (ex: 300)
+s_initial = float(input("Entrer le placement de départ: "))
+
+# v : Montant injecté tous les mois (ex: 45)
+v = float(input("Entrer le montant du versement mensuel: "))
+
+# t : Taux d'intérêt annuel en % (ex: 2.3)
+t = float(input("Entrer le taux annuel en %: "))
+
+# n : Durée totale du placement en années (ex: 8)
+n = int(input("Entrer le nombre d'années: "))
+
+# Calcul du capital brut versé uniquement de notre poche sans les intérêts
+# Formule : Placement de départ + (Versement mensuel * 12 mois * Nombre d'années)
+capital_sans_interets = s_initial + (v * 12 * n)
+
+
+# ==============================================================================
+# QUESTION 1 : Intérêts calculés UNE FOIS PAR AN
+# ==============================================================================
+
+# On initialise le capital de la question 1 avec la somme de départ
+s = s_initial
+
+# Conversion du taux annuel en valeur décimale (2.3% -> 2.3 / 100 = 0.023)
+ta = t / 100
+
+# Boucle mois par mois : range(n * 12) fait tourner la boucle 96 fois (de j=0 à j=95)
+for j in range(n * 12):
+    # 1. Chaque début de mois, on ajoute notre versement mensuel de 45 €
+    s = s + v
+    
+    # 2. On vérifie si 12 mois se sont écoulés pour verser les intérêts annuels.
+    # j+1 donne le numéro du mois en cours (de 1 à 96). Si (j+1) % 12 vaut 0, l'année est finie.
+    if (j + 1) % 12 == 0:
+        interets_annuels = s * ta
+        s = s + interets_annuels
+
+# Calcul des intérêts nets gagnés (Capital final avec intérêts - Notre argent de départ)
+interets_gagnes_q1 = s - capital_sans_interets
+
+# Affichage des résultats de la Question 1 (Strictement identique au visuel de ta capture 1)
+print(f"Le capital acquis avec intérêts est de {round(s, 2)} euros au bout de {n} ans avec des versements mensuels de {round(v)} euros.")
+print(f"Les intérêts gagnés au taux annuel de {t} % sont de {round(interets_gagnes_q1, 2)} euros.")
+print(f"Sans placement avec intérêts le capital acqui serait de {round(capital_sans_interets)} euros.")
+
+
+# ==============================================================================
+# QUESTION 2 : Intérêts calculés UNE FOIS PAR MOIS
+# ==============================================================================
+
+# On réinitialise le capital pour la question 2 avec la somme de départ
+s = s_initial
+
+# Calcul du taux mensuel (Taux annuel divisé par 12 mois et divisé par 100)
+tm = t / 12 / 100
+
+# Deuxième boucle mois par mois (96 tours de boucle)
+for j in range(n * 12):
+    # 1. On commence par ajouter le versement mensuel de 45 €
+    s = s + v
+    
+    # 2. CHAQUE MOIS (sans condition 'if'), la banque calcule et ajoute les intérêts mensuels
+    interets_du_mois = s * tm
+    s = s + interets_du_mois
+
+# Calcul des intérêts nets gagnés avec la méthode mensuelle
+interets_gagnes_q2 = s - capital_sans_interets
+
+# Affichage des résultats de la Question 2 (Strictement identique au visuel de ta capture 2)
+print("\nExemple de résultat attendu à la question 2 :")
+print(f"Le capital acquis avec intérêts est de {round(s, 2)} euros au bout de {n} ans avec des versements mensuels de {round(v)} euros.")
+print(f"Les intérêts gagnés au taux annuel de {t} % sont de {round(interets_gagnes_q2, 2)} euros.")
+print(f"Sans placement avec intérêts le capital acqui serait de {round(capital_sans_interets)} euros.")
